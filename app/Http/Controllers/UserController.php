@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -64,6 +65,7 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->role = $request->role;
         $user->avatar = isset($file_path) ? $file_path : '';
+        $user->email_verified_at = Carbon::now();
         $user->save();
 
         return redirect()->back()->with('success', 'Berhasil menambahkan data');
