@@ -23,6 +23,14 @@ class OrderController extends Controller
         ];
         return view('admin.order.index', $data);
     }
+    public function member()
+    {
+        $data = [
+            'title' => 'Daftar Pesanan',
+            'orders' => Order::where('id_user', Auth::user()->id)->get(),
+        ];
+        return view('admin.order.member', $data);
+    }
     public function store(Request $request)
     {
         try {
@@ -68,7 +76,7 @@ class OrderController extends Controller
             $notifikasi->id_user = $orders->id_user;
             $notifikasi->type = 'success';
             $notifikasi->content = 'Pesanan anda telah ditambahkan dengan nomor invoice : ' . $orders->invoice;
-            $notifikasi->url = '/orders';
+            $notifikasi->url = '/orders/member';
             $notifikasi->read_at = null;
             $notifikasi->save();
 
@@ -101,7 +109,7 @@ class OrderController extends Controller
             $notifikasi->id_user = $order->id_user;
             $notifikasi->type = 'success';
             $notifikasi->content = 'Admin telah menambahkan bukti pembayaran pada nomor invoice : ' . $order->invoice;
-            $notifikasi->url = '/orders';
+            $notifikasi->url = '/orders/member';
             $notifikasi->read_at = null;
             $notifikasi->save();
 
@@ -123,7 +131,7 @@ class OrderController extends Controller
         $notifikasi->id_user = $order->id_user;
         $notifikasi->type = 'success';
         $notifikasi->content = 'Admin telah mengkonfirmasi pelunasan pada nomor invoice : ' . $order->invoice;
-        $notifikasi->url = '/orders';
+        $notifikasi->url = '/orders/member';
         $notifikasi->read_at = null;
         $notifikasi->save();
 
@@ -157,7 +165,7 @@ class OrderController extends Controller
             $notifikasi->id_user = $order->id_user;
             $notifikasi->type = 'success';
             $notifikasi->content = 'Admin telah menambah pesanan pada nomor invoice : ' . $order->invoice;
-            $notifikasi->url = '/orders';
+            $notifikasi->url = '/orders/member';
             $notifikasi->read_at = null;
             $notifikasi->save();
 

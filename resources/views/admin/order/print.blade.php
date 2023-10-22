@@ -90,13 +90,15 @@
 
         <!-- Row end -->
     </div>
-    <table class="table table-borderles">
-        <tr>
-            <td>Tanda Terima</td>
-            <td></td>
-            <td align="right" style="height: 100px">Hormat Kami</td>
-        </tr>
-    </table>
+    @if (Auth::user()->role == 'admin')
+        <table class="table table-borderles">
+            <tr>
+                <td>Tanda Terima</td>
+                <td></td>
+                <td align="right" style="height: 100px">Hormat Kami</td>
+            </tr>
+        </table>
+    @endif
     <small class="text-center">
         *Terimakasih atas kepercayaan anda berkunjung ke rumah makan kami<br>
         Dicetak pada {{ date('d-m-Y H:i:s') }}

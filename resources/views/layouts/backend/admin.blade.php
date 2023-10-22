@@ -132,6 +132,39 @@
             </div>
             <div class="ml-auto">
                 <ul class="list-unstyled">
+                    <li class="pc-h-item">
+                        <a class="pc-head-link mr-0" href="#" data-toggle="dropdown" role="button"
+                            aria-haspopup="false" aria-expanded="false">
+                            <i data-feather="bell" class="text-primary"></i>
+                            @if (App\Models\Notifikasi::where('id_user', Auth::user()->id)->where('read_at', null)->count() != 0)
+                                <span class="badge badge-danger pc-h-badge "
+                                    style="font-size: 8px;">{{ App\Models\Notifikasi::where('id_user', Auth::user()->id)->where('read_at', null)->count() }}</span>
+                            @endif
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right pc-h-dropdown">
+                            <div class=" dropdown-header">
+                                <h6 class="text-overflow m-0">Notifikasi !</h6>
+                            </div>
+                            @foreach (App\Models\Notifikasi::where('id_user', Auth::user()->id)->where('read_at', null)->limit(10)->orderBy('id', 'DESC')->get() as $item)
+                                <form action="{{ route('read_notif', $item->id) }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="dropdown-item">
+                                        <i data-feather="info"
+                                            class="{{ $item->type == 'danger' ? 'text-danger' : 'text-success' }}"></i>
+                                        <span>{{ Str::limit($item->content, 50) }}</span>
+                                        <br><small
+                                            class="text-muted ml-4">{{ $item->created_at->diffForHumans() }}</small>
+                                    </button>
+                                </form>
+                            @endforeach
+                            <hr>
+                            <a href="{{ route('notifikasi') }}" class="dropdown-item text-center">
+                                <span>Lihat semua</span>
+                            </a>
+                        </div>
+                    </li>
 
                     <li class="dropdown pc-h-item">
                         <a class="pc-head-link dropdown-toggle arrow-none mr-0" data-toggle="dropdown" href="#"

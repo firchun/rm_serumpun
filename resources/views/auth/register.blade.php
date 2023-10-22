@@ -9,7 +9,7 @@
                     <div class="col-md-12">
                         <div class="card-body">
 
-                            <form method="POST" action="{{ route('register') }}">
+                            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                                 @csrf
                                 {{-- <img src="assets/images/logo-dark.svg" alt="" class="img-fluid mb-4"> --}}
                                 <h1><a href="{{ url('/') }}" class="text-primary">{{ env('APP_NAME') }}</a></h1>
@@ -22,6 +22,17 @@
                                     @endforeach
                                 @endif
 
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i data-feather="image"></i></span>
+                                    </div>
+                                    <input type="file" name="avatar" class="form-control">
+                                    @error('avatar')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i data-feather="user"></i></span>

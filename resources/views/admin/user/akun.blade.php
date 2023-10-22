@@ -62,7 +62,7 @@
                                             </div>
                                         @endforeach
                                     @endif
-                                    <form method="POST" action="{{ url('user.update', $user->id) }}"
+                                    <form method="POST" action="{{ route('user.update', $user->id) }}"
                                         enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')

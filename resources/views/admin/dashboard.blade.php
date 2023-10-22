@@ -7,8 +7,8 @@
                 <div class="col-12">
                     @include('admin.component._count_items')
                 </div>
-
             </div>
+            @include('admin.component._menu')
         </div>
     </div>
 @endsection

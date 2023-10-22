@@ -25,11 +25,22 @@ class UserController extends Controller
     {
         $user = User::where('role', 'admin')->get();
         $data = [
-            'title' => 'Akun',
+            'title' => 'Akun Admin',
             'user' => $user,
         ];
 
         return view('admin.user.index', $data);
+    }
+
+    public function member()
+    {
+        $user = User::where('role', 'member')->get();
+        $data = [
+            'title' => 'Akun Member',
+            'user' => $user,
+        ];
+
+        return view('admin.user.member', $data);
     }
     public function store(Request $request)
     {

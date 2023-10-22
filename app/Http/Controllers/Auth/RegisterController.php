@@ -50,6 +50,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'avatar' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,2048'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -64,10 +65,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // Mengunggah gambar avatar jika ada
+        if (isset($data['avatar'])) {
+            $avatarPath = $data['avatar']->store('uploads', 'public');
+        } else {
+            $avatarPath = null;
+        }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
+            'role' => 'member',
             'password' => Hash::make($data['password']),
+            'avatar' => $avatarPath,
         ]);
     }
 }

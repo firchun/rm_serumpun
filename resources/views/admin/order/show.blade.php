@@ -15,12 +15,15 @@
                 @if ($paid_off->count() == 0)
                     <div class="col-12">
                         <div class="alert alert-danger form-inline" role="alert">
-                            Pesanan belum lunas,
-                            <form action="{{ route('orders.lunas') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="id_order" value="{{ $order->id }}">
-                                <button type="submit" class="btn btn-sm btn-success">Verifikasi pelunasan</button>
-                            </form>
+                            Pesanan belum lunas
+                            @if (Auth::user()->role == 'admin')
+                                ,
+                                <form action="{{ route('orders.lunas') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id_order" value="{{ $order->id }}">
+                                    <button type="submit" class="btn btn-sm btn-success">Verifikasi pelunasan</button>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 @else
@@ -61,10 +64,12 @@
                             @php
                                 $payment = App\Models\OrderPayment::where('id_order', $order->id)->get();
                             @endphp
-                            <button type="button" class="btn btn-success btn-md mb-3 btn-round btn-block"
-                                data-toggle="modal" data-target=".bayar"><i class="feather f-16 icon-plus"></i>
-                                Tambah</button>
-                            <hr>
+                            @if (Auth::user()->role == 'admin')
+                                <button type="button" class="btn btn-success btn-md mb-3 btn-round btn-block"
+                                    data-toggle="modal" data-target=".bayar"><i class="feather f-16 icon-plus"></i>
+                                    Tambah</button>
+                                <hr>
+                            @endif
                             <div class="my-3 table-responsive">
                                 <table class="table table-bordered table-hover">
                                     <thead>
@@ -89,16 +94,19 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="text-right">
-                                                    <form action="{{ route('orders.destroyPayment', $item->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-light-danger delete-button">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                </td>
+                                                @if (Auth::user()->role == 'admin')
+                                                    <td class="text-right">
+                                                        <form action="{{ route('orders.destroyPayment', $item->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn btn-light-danger delete-button">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -113,15 +121,17 @@
                             <h5>{{ $title }}</h5>
                         </div>
                         <div class="card-body">
-                            <div class="row align-items-center m-l-0">
-                                <div class="col-sm-6">
+                            @if (Auth::user()->role == 'admin')
+                                <div class="row align-items-center m-l-0">
+                                    <div class="col-sm-6">
+                                    </div>
+                                    <div class="col-sm-6 text-right">
+                                        <button type="button" class="btn btn-success btn-md mb-3 btn-round"
+                                            data-toggle="modal" data-target=".tambah"><i class="feather f-16 icon-plus"></i>
+                                            Tambah</button>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6 text-right">
-                                    <button type="button" class="btn btn-success btn-md mb-3 btn-round" data-toggle="modal"
-                                        data-target=".tambah"><i class="feather f-16 icon-plus"></i>
-                                        Tambah</button>
-                                </div>
-                            </div>
+                            @endif
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped mb-0 lara-dataTable">
                                     <thead>
@@ -130,7 +140,9 @@
                                             <th>Pesanan</th>
                                             <th>Jumlah</th>
                                             <th>Harga</th>
-                                            <th></th>
+                                            @if (Auth::user()->role == 'admin')
+                                                <th></th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -140,16 +152,19 @@
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->sum }}</td>
                                                 <td>Rp {{ number_format($item->price) }}</td>
-                                                <td>
-                                                    <form action="{{ route('orders.destroyItems', $item->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-light-danger delete-button">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                </td>
+                                                @if (Auth::user()->role == 'admin')
+                                                    <td>
+                                                        <form action="{{ route('orders.destroyItems', $item->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn btn-light-danger delete-button">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -161,7 +176,9 @@
             </div>
         </div>
     </section>
-    {{-- modal create  --}}
-    @include('admin.order.components.modal_bayar')
-    @include('admin.order.components.modal_pesan')
+    @if (Auth::user()->role == 'admin')
+        {{-- modal create  --}}
+        @include('admin.order.components.modal_bayar')
+        @include('admin.order.components.modal_pesan')
+    @endif
 @endsection
