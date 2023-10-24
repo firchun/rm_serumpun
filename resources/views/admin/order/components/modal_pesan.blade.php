@@ -1,5 +1,5 @@
 <div class="modal fade tambah" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg ">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title h4" id="myLargeModalLabel">Tambah Pesanan</h5>
@@ -18,6 +18,19 @@
                         <div class="col-lg-2">
                             <label>Jumlah </label>
                             <input type="number" name="sum[]" class="form-control" value="1">
+                        </div>
+                        <div class="col-lg-2">
+                            <label>Satuan </label>
+                            <select name="unit[]" class="form-control">
+                                <option value="Bungkus">Bungkus</option>
+                                <option value="Porsi">Porsi</option>
+                                <option value="Kotak">Kotak</option>
+                                <option value="Plastik">Plastik</option>
+                                <option value="Pcs">Pcs</option>
+                                <option value="Botol">Botol</option>
+                                <option value="Gelas">Gelas</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
                         </div>
                         <div class="col-lg-4">
                             <label>Harga Pesanan (Rp)</label>
@@ -53,6 +66,19 @@
                     <label>Jumlah </label>
                     <input type="number" name="sum[]" class="form-control" value="1">
                 </div>
+                <div class="col-lg-2">
+                                <label>Satuan </label>
+                                <select name="unit[]" class="form-control">
+                                    <option value="Bungkus">Bungkus</option>
+                                    <option value="Porsi">Porsi</option>
+                                    <option value="Kotak">Kotak</option>
+                                    <option value="Plastik">Plastik</option>
+                                    <option value="Pcs">Pcs</option>
+                                    <option value="Botol">Botol</option>
+                                    <option value="Gelas">Gelas</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                            </div>
                 <div class="col-lg-4">
                     <label>Harga Pesanan (Rp)</label>
                     <input type="number" name="price[]" class="form-control">

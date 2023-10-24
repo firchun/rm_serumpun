@@ -77,7 +77,8 @@
                                 @endphp
                                 <ol>
                                     @foreach ($order_item as $list)
-                                        <li>{{ $list->name }} ({{ $list->sum }}) - Rp
+                                        <li>{{ $list->name }} ({{ $list->sum }} <small>{{ $list->unit }}</small>)
+                                            - Rp
                                             {{ number_format($list->price) }}</li>
                                     @endforeach
                                 </ol>

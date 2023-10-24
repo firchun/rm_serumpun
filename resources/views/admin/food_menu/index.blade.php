@@ -103,7 +103,7 @@
                                                                 data-target=".edit-{{ $item->id }}"><i
                                                                     class="icon feather icon-edit f-16"></i>
                                                             </button>
-                                                            @include('admin.food_menu.components.modal_edit')
+
                                                             <form method="POST"
                                                                 action="{{ route('foods.destroy', $item->id) }}"
                                                                 class="d-inline-block">
@@ -131,4 +131,7 @@
                 <!-- [ Main Content ] end -->
             </div>
     </section>
+    @foreach ($food_menu as $item)
+        @include('admin.food_menu.components.modal_edit')
+    @endforeach
 @endsection

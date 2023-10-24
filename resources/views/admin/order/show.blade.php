@@ -16,7 +16,7 @@
                     <div class="col-12">
                         <div class="alert alert-danger form-inline" role="alert">
                             Pesanan belum lunas
-                            @if (Auth::user()->role == 'admin')
+                            @if (Auth::user()->role == 'kasir' || Auth::user()->role == 'pengelola')
                                 ,
                                 <form action="{{ route('orders.lunas') }}" method="POST">
                                     @csrf
@@ -64,7 +64,7 @@
                             @php
                                 $payment = App\Models\OrderPayment::where('id_order', $order->id)->get();
                             @endphp
-                            @if (Auth::user()->role == 'admin')
+                            @if (Auth::user()->role == 'kasir' || Auth::user()->role == 'pengelola')
                                 <button type="button" class="btn btn-success btn-md mb-3 btn-round btn-block"
                                     data-toggle="modal" data-target=".bayar"><i class="feather f-16 icon-plus"></i>
                                     Tambah</button>
@@ -94,7 +94,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                @if (Auth::user()->role == 'admin')
+                                                @if (Auth::user()->role == 'kasir')
                                                     <td class="text-right">
                                                         <form action="{{ route('orders.destroyPayment', $item->id) }}"
                                                             method="POST">
@@ -121,7 +121,7 @@
                             <h5>{{ $title }}</h5>
                         </div>
                         <div class="card-body">
-                            @if (Auth::user()->role == 'admin')
+                            @if (Auth::user()->role == 'kasir')
                                 <div class="row align-items-center m-l-0">
                                     <div class="col-sm-6">
                                     </div>
@@ -140,7 +140,7 @@
                                             <th>Pesanan</th>
                                             <th>Jumlah</th>
                                             <th>Harga</th>
-                                            @if (Auth::user()->role == 'admin')
+                                            @if (Auth::user()->role == 'kasir')
                                                 <th></th>
                                             @endif
                                         </tr>
@@ -150,9 +150,9 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->name }}</td>
-                                                <td>{{ $item->sum }}</td>
+                                                <td>{{ $item->sum }} <small>{{ $item->unit }}</small></td>
                                                 <td>Rp {{ number_format($item->price) }}</td>
-                                                @if (Auth::user()->role == 'admin')
+                                                @if (Auth::user()->role == 'kasir')
                                                     <td>
                                                         <form action="{{ route('orders.destroyItems', $item->id) }}"
                                                             method="POST">
@@ -176,7 +176,7 @@
             </div>
         </div>
     </section>
-    @if (Auth::user()->role == 'admin')
+    @if (Auth::user()->role == 'kasir')
         {{-- modal create  --}}
         @include('admin.order.components.modal_bayar')
         @include('admin.order.components.modal_pesan')

@@ -65,7 +65,7 @@
                             <td>
                                 {{ $list->name }}
                             </td>
-                            <td>{{ $list->sum }} </td>
+                            <td>{{ $list->sum }} <small>{{ $list->unit }} </small></td>
                             <td>Rp {{ number_format($list->price) }}</td>
                         </tr>
                     @endforeach

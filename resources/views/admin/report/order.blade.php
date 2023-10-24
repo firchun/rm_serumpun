@@ -10,13 +10,37 @@
             <!-- [ Main Content ] start -->
             <div class="row">
                 <!-- subscribe start -->
+                <div class="col-12 my-3">
+                    <form action="{{ route('report.pdf_orders') }}" method="GET">
+                        <div class="form-inline">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Tanggal</span>
+                                </div>
+                                <input type="date" name="from_date" class="form-control" value="{{ date('Y-m-d') }}">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Sampai</span>
+                                </div>
+                                <input type="date" name="to_date" class="form-control"
+                                    value="{{ date('Y-m-d', strtotime('+1 month')) }}">
+                            </div>
+                            <select name="pembayaran" class="form-control mx-2">
+                                <option value="semua" selected>Semua</option>
+                                <option value="lunas">Lunas</option>
+                                <option value="belum-lunas">Belum Lunas</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary"><i class="feather f-16 icon-printer"></i>
+                                Cetak laporan</button>
+                        </div>
+                    </form>
+                </div>
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h5>{{ $title }}</h5>
                         </div>
                         <div class="card-body">
-                            <div class="row align-items-center m-l-0 mb-2">
+                            {{-- <div class="row align-items-center m-l-0 mb-2">
                                 <div class="col-sm-6">
                                 </div>
                                 <div class="col-sm-6 text-right">
@@ -24,7 +48,7 @@
                                             class="feather f-16 icon-printer"></i>
                                         Cetak Laporan</a>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped mb-0 lara-dataTable">
                                     <thead>
@@ -70,8 +94,10 @@
                                                     @endphp
                                                     <ol>
                                                         @foreach ($order_item as $list)
-                                                            <li>{{ $list->name }} ({{ $list->sum }}) - Rp
-                                                                {{ number_format($list->price) }}</li>
+                                                            <li>{{ $list->name }} ({{ $list->sum }}
+                                                                <small>{{ $list->unit }}</small>) - Rp
+                                                                {{ number_format($list->price) }}
+                                                            </li>
                                                         @endforeach
                                                     </ol>
                                                 </td>

@@ -19,7 +19,7 @@ class OrderController extends Controller
     {
         $data = [
             'title' => 'Daftar Pesanan',
-            'orders' => Order::all(),
+            'orders' => Order::latest()->get(),
         ];
         return view('admin.order.index', $data);
     }
@@ -27,7 +27,7 @@ class OrderController extends Controller
     {
         $data = [
             'title' => 'Daftar Pesanan',
-            'orders' => Order::where('id_user', Auth::user()->id)->get(),
+            'orders' => Order::where('id_user', Auth::user()->id)->latest()->get(),
         ];
         return view('admin.order.member', $data);
     }
@@ -61,12 +61,14 @@ class OrderController extends Controller
             $names = $request->name;
             $sums = $request->sum;
             $prices = $request->price;
+            $units = $request->unit;
 
             foreach ($names as $key => $name) {
                 $orderItem = new OrderItem();
                 $orderItem->id_order = $orders->id; // Hubungkan dengan ID order yang baru saja dibuat
                 $orderItem->name = $name;
                 $orderItem->sum = $sums[$key];
+                $orderItem->unit = $units[$key];
                 $orderItem->price = $prices[$key];
                 $orderItem->save();
             }
@@ -149,11 +151,13 @@ class OrderController extends Controller
             $names = $request->name;
             $sums = $request->sum;
             $prices = $request->price;
+            $units = $request->unit;
 
             foreach ($names as $key => $name) {
                 $orderItem = new OrderItem();
                 $orderItem->id_order = $request->id_order; // Hubungkan dengan ID order yang baru saja dibuat
                 $orderItem->name = $name;
+                $orderItem->unit = $units[$key];
                 $orderItem->sum = $sums[$key];
                 $orderItem->price = $prices[$key];
                 $orderItem->save();

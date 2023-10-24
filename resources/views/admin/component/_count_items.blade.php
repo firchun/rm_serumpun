@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 d-none d-md-table-cell d-lg-table-cell d-xl-table-cell card-body br">
+        <div class="col-sm-6 card-body br">
             <div class="row">
                 <div class="col-sm-4">
                     <i class="icon feather icon-shopping-cart text-primary mb-1 d-block"></i>

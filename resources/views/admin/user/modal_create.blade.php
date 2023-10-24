@@ -10,7 +10,7 @@
 
                 <form method="POST" action="{{ url('/user/store') }}" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="role" value="admin">
+                    <input type="hidden" name="role" value="kasir">
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label>Avatar</label>

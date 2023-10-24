@@ -4,7 +4,7 @@
     </li>
     <li class="pc-item"><a href="{{ url('/') }}" class="pc-link "><span class="pc-micon"><i
                     data-feather="layout"></i></span><span class="pc-mtext">Dashboard</span></a></li>
-    @if (Auth::user()->role == 'admin')
+    @if (Auth::user()->role == 'kasir')
         <li class="pc-item pc-caption">
             <label>Data</label>
         </li>
@@ -15,7 +15,7 @@
         </li>
         <li class="pc-item"><a href="{{ url('/orders') }}" class="pc-link "><span class="pc-micon"><i
                         data-feather="layout"></i></span><span class="pc-mtext">Pesanan</span></a></li>
-
+    @elseif(Auth::user()->role == 'pengelola')
         <li class="pc-item pc-caption">
             <label>Akun</label>
         </li>
@@ -24,20 +24,20 @@
                     class="pc-mtext">Modul User</span><span class="pc-arrow"><i
                         data-feather="chevron-right"></i></span></a>
             <ul class="pc-submenu">
-                <li class="pc-item"><a href="{{ url('/user') }}" class="pc-link ">Akun Admin</a></li>
+                <li class="pc-item"><a href="{{ url('/user') }}" class="pc-link ">Akun Kasir</a></li>
             </ul>
             <ul class="pc-submenu">
-                <li class="pc-item"><a href="{{ url('/user/member') }}" class="pc-link ">Akun Member</a></li>
+                <li class="pc-item"><a href="{{ url('/user/member') }}" class="pc-link ">Akun User</a></li>
             </ul>
         </li>
-    @elseif(Auth::user()->role == 'member')
+    @elseif(Auth::user()->role == 'user')
         <li class="pc-item pc-caption">
             <label>Transaksi</label>
         </li>
         <li class="pc-item"><a href="{{ url('/orders/member') }}" class="pc-link "><span class="pc-micon"><i
                         data-feather="layout"></i></span><span class="pc-mtext">Pesanan</span></a></li>
     @endif
-    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'owner')
+    @if (Auth::user()->role == 'pengelola')
         <li class="pc-item pc-caption">
             <label>laporan</label>
         </li>

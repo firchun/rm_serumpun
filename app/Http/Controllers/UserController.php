@@ -24,7 +24,7 @@ class UserController extends Controller
     }
     public function index()
     {
-        $user = User::where('role', 'admin')->get();
+        $user = User::where('role', 'kasir')->get();
         $data = [
             'title' => 'Akun Admin',
             'user' => $user,
@@ -35,7 +35,7 @@ class UserController extends Controller
 
     public function member()
     {
-        $user = User::where('role', 'member')->get();
+        $user = User::where('role', 'user')->get();
         $data = [
             'title' => 'Akun Member',
             'user' => $user,

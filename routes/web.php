@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::put('user/update/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('user.update');
 });
 // Grouping routes for admin middleware
-Route::middleware(['role:admin,super_admin', 'verified'])->group(function () {
+Route::middleware(['role:kasir', 'verified'])->group(function () {
     //order
     Route::get('orders', [OrderController::class, 'index'])->name('orders');
     Route::post('orders/store', [OrderController::class, 'store'])->name('orders.store');
@@ -58,18 +58,18 @@ Route::middleware(['role:admin,super_admin', 'verified'])->group(function () {
     Route::post('foods/store', [FoodMenuController::class, 'store'])->name('foods.store');
     Route::put('foods/update/{id}', [FoodMenuController::class, 'update'])->name('foods.update');
     Route::delete('foods/destroy/{id}', [FoodMenuController::class, 'destroy'])->name('foods.destroy');
+});
+Route::middleware(['role:user', 'verified'])->group(function () {
+    //order
+    Route::get('orders/member', [OrderController::class, 'member'])->name('orders.member');
+});
+Route::middleware(['role:pengelola', 'verified'])->group(function () {
     //user
     Route::get('user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
     Route::get('user/member', [App\Http\Controllers\UserController::class, 'member'])->name('user.member');
     Route::post('user/store', [App\Http\Controllers\UserController::class, 'store'])->name('user.store');
 
     Route::delete('user/destroy/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('user.destroy');
-});
-Route::middleware(['role:member', 'verified'])->group(function () {
-    //order
-    Route::get('orders/member', [OrderController::class, 'member'])->name('orders.member');
-});
-Route::middleware(['role:admin,owner', 'verified'])->group(function () {
     //report
     Route::get('report/menu', [ReportController::class, 'menu'])->name('report.menu');
     Route::get('report/pdf_menu', [ReportController::class, 'pdf_menu'])->name('report.pdf_menu');
