@@ -75,7 +75,7 @@
                                                                         data-toggle="lightbox">
                                                                         <img src="{{ $item->thumbnail == '' ? asset('img/user.png') : url(Storage::url($item->thumbnail)) }}"
                                                                             alt="{{ $item->name }}"
-                                                                            class="img-fluid img-avatar" width="100">
+                                                                            class="img-fluid img-avatar" width="100"  loading="lazy">
                                                                     </a>
                                                                 </div>
                                                             </div>

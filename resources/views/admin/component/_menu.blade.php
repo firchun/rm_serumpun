@@ -9,7 +9,7 @@
                     <div class="row align-items-center m-l-0">
                         <div class="col-auto mb-2">
                             <img src="{{ $item->thumbnail != '' ? Storage::url($item->thumbnail) : asset('img/no-image.jpg') }}"
-                                style="width: 150px;">
+                                style="width: 150px; height:150px; object-fit:cover;">
                         </div>
                         <div class="col-auto">
                             <h5 class="text-primary">{{ $item->name }}</h5>

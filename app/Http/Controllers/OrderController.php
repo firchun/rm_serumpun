@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class OrderController extends Controller
 {
@@ -35,7 +36,7 @@ class OrderController extends Controller
     {
         try {
             $request->validate([
-                'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,2048'],
+                'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,10000'],
                 'id_user' => ['required'],
                 'description' => ['nullable', 'string', 'max:191'],
                 'name.*' => 'required|string',
@@ -43,9 +44,22 @@ class OrderController extends Controller
                 'price.*' => 'required|numeric|min:0',
             ]);
 
+            // if ($request->hasFile('thumbnail')) {
+            //     $filename = Str::random(32) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
+            //     $file_path = $request->file('thumbnail')->storeAs('public/uploads', $filename);
+            // }
             if ($request->hasFile('thumbnail')) {
                 $filename = Str::random(32) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-                $file_path = $request->file('thumbnail')->storeAs('public/uploads', $filename);
+
+                $image = $request->file('thumbnail');
+                $path = storage_path('app/public/uploads/') . $filename;
+
+                // Resize dan simpan gambar
+                Image::make($image->getRealPath())->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($path);
+
+                $file_path = 'public/uploads/' . $filename;
             }
 
             $orders = new Order();
@@ -91,13 +105,26 @@ class OrderController extends Controller
     {
         try {
             $request->validate([
-                'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,2048'],
+                'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,10000'],
                 'id_order' => ['required'],
             ]);
 
+            // if ($request->hasFile('thumbnail')) {
+            //     $filename = Str::random(32) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
+            //     $file_path = $request->file('thumbnail')->storeAs('public/uploads', $filename);
+            // }
             if ($request->hasFile('thumbnail')) {
                 $filename = Str::random(32) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-                $file_path = $request->file('thumbnail')->storeAs('public/uploads', $filename);
+
+                $image = $request->file('thumbnail');
+                $path = storage_path('app/public/uploads/') . $filename;
+
+                // Resize dan simpan gambar
+                Image::make($image->getRealPath())->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($path);
+
+                $file_path = 'public/uploads/' . $filename;
             }
 
             $order_payment = new OrderPayment();
@@ -181,19 +208,38 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,2048'],
+            'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,10000'],
             'id_user' => ['required'],
             'description' => ['nullable', 'string', 'max:191'],
 
         ]);
         $orders = Order::findOrFail($id);
+        // if ($request->hasFile('thumbnail')) {
+        //     if ($orders->thumbnail != '') {
+        //         Storage::delete($orders->thumbnail);
+        //     }
+
+        //     $filename = Str::random(32) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
+        //     $file_path = $request->file('thumbnail')->storeAs('public/uploads', $filename);
+        // }
         if ($request->hasFile('thumbnail')) {
+            // Hapus gambar lama jika ada
             if ($orders->thumbnail != '') {
                 Storage::delete($orders->thumbnail);
             }
 
+            // Simpan gambar baru dengan ukuran yang lebih kecil
             $filename = Str::random(32) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-            $file_path = $request->file('thumbnail')->storeAs('public/uploads', $filename);
+
+            $image = $request->file('thumbnail');
+            $path = storage_path('app/public/uploads/') . $filename;
+
+            // Resize dan simpan gambar
+            Image::make($image->getRealPath())->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($path);
+
+            $file_path = 'public/uploads/' . $filename;
         }
 
         $orders->id_user = $request->id_user;

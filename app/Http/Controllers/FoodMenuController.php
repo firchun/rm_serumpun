@@ -6,6 +6,8 @@ use App\Models\FoodMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
+
 
 class FoodMenuController extends Controller
 {
@@ -20,16 +22,30 @@ class FoodMenuController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,2048'],
+            'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,10000'],
             'name' => ['required', 'string', 'max:191'],
             'price' => ['required', 'string', 'max:191'],
             'description' => ['nullable', 'string', 'max:191'],
         ]);
 
+        // if ($request->hasFile('thumbnail')) {
+        //     $filename = Str::random(32) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
+        //     $file_path = $request->file('thumbnail')->storeAs('public/uploads', $filename);
+        // }
         if ($request->hasFile('thumbnail')) {
             $filename = Str::random(32) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-            $file_path = $request->file('thumbnail')->storeAs('public/uploads', $filename);
+
+            $image = $request->file('thumbnail');
+            $path = storage_path('app/public/uploads/') . $filename;
+
+            // Resize dan simpan gambar
+            Image::make($image->getRealPath())->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($path);
+
+            $file_path = 'public/uploads/' . $filename;
         }
+
         $foods = new FoodMenu();
         $foods->name = $request->name;
         $foods->price = $request->price;
@@ -42,19 +58,38 @@ class FoodMenuController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,2048'],
+            'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,10000'],
             'name' => ['required', 'string', 'max:191'],
             'price' => ['required', 'string', 'max:191'],
             'description' => ['nullable', 'string', 'max:191'],
         ]);
         $foods = FoodMenu::findOrFail($id);
+        // if ($request->hasFile('thumbnail')) {
+        //     if ($foods->thumbnail != '') {
+        //         Storage::delete($foods->thumbnail);
+        //     }
+
+        //     $filename = Str::random(32) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
+        //     $file_path = $request->file('thumbnail')->storeAs('public/uploads', $filename);
+        // }
         if ($request->hasFile('thumbnail')) {
+            // Hapus gambar lama jika ada
             if ($foods->thumbnail != '') {
                 Storage::delete($foods->thumbnail);
             }
 
+            // Simpan gambar baru dengan ukuran yang lebih kecil
             $filename = Str::random(32) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-            $file_path = $request->file('thumbnail')->storeAs('public/uploads', $filename);
+
+            $image = $request->file('thumbnail');
+            $path = storage_path('app/public/uploads/') . $filename;
+
+            // Resize dan simpan gambar
+            Image::make($image->getRealPath())->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($path);
+
+            $file_path = 'public/uploads/' . $filename;
         }
         $foods->name = $request->name;
         $foods->price = $request->price;
