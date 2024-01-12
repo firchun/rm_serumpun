@@ -8,7 +8,15 @@
                     @include('admin.component._count_items')
                 </div>
             </div>
-            @include('admin.component._menu')
+            <div class="row">
+                <div class="col-lg-4">
+
+                    @include('admin.component._invoice')
+                </div>
+                <div class="col-lg-8">
+                    @include('admin.component._menu')
+                </div>
+            </div>
         </div>
     </div>
 @endsection

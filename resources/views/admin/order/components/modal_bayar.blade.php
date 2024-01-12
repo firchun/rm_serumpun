@@ -14,6 +14,10 @@
                         <label>Foto Bukti Pembayaran</label>
                         <input type="file" class="form-control" name="thumbnail">
                     </div>
+                    <div class="form-group">
+                        <label>Jumlah Pembayaran <span class="text-danger">*</span></label>
+                        <input type="number" name="paid" class="form-control" value="0">
+                    </div>
                     <button type="submit" class="btn btn-primary mt-3">Simpan</button>
                 </form>
             </div>

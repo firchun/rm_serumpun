@@ -65,10 +65,12 @@
                                 $payment = App\Models\OrderPayment::where('id_order', $order->id)->get();
                             @endphp
                             @if (Auth::user()->role == 'kasir' || Auth::user()->role == 'pengelola')
-                                <button type="button" class="btn btn-success btn-md mb-3 btn-round btn-block"
-                                    data-toggle="modal" data-target=".bayar"><i class="feather f-16 icon-plus"></i>
-                                    Tambah</button>
-                                <hr>
+                                @if ($paid_off->count() == 0)
+                                    <button type="button" class="btn btn-success btn-md mb-3 btn-round btn-block"
+                                        data-toggle="modal" data-target=".bayar"><i class="feather f-16 icon-plus"></i>
+                                        Tambah</button>
+                                    <hr>
+                                @endif
                             @endif
                             <div class="my-3 table-responsive">
                                 <table class="table table-bordered table-hover">
@@ -82,6 +84,8 @@
                                         @foreach ($payment as $item)
                                             <tr>
                                                 <td width="150">
+                                                    <h3 class="border-bottom border-success">Rp
+                                                        {{ number_format($item->paid) }}</h3>
                                                     <div class="thumbnail">
                                                         <div class="thumb">
                                                             <a href="{{ $item->thumbnail == '' ? asset('img/no-image.jpg') : url(Storage::url($item->thumbnail)) }}"
@@ -94,7 +98,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                @if (Auth::user()->role == 'kasir')
+                                                @if (Auth::user()->role == 'kasir' && $paid_off->count() == 0)
                                                     <td class="text-right">
                                                         <form action="{{ route('orders.destroyPayment', $item->id) }}"
                                                             method="POST">
@@ -121,7 +125,7 @@
                             <h5>{{ $title }}</h5>
                         </div>
                         <div class="card-body">
-                            @if (Auth::user()->role == 'kasir')
+                            @if (Auth::user()->role == 'kasir' && $paid_off->count() == 0)
                                 <div class="row align-items-center m-l-0">
                                     <div class="col-sm-6">
                                     </div>
@@ -140,7 +144,7 @@
                                             <th>Pesanan</th>
                                             <th>Jumlah</th>
                                             <th>Harga</th>
-                                            @if (Auth::user()->role == 'kasir')
+                                            @if (Auth::user()->role == 'kasir' && $paid_off->count() == 0)
                                                 <th></th>
                                             @endif
                                         </tr>
@@ -152,7 +156,7 @@
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->sum }} <small>{{ $item->unit }}</small></td>
                                                 <td>Rp {{ number_format($item->price) }}</td>
-                                                @if (Auth::user()->role == 'kasir')
+                                                @if (Auth::user()->role == 'kasir' && $paid_off->count() == 0)
                                                     <td>
                                                         <form action="{{ route('orders.destroyItems', $item->id) }}"
                                                             method="POST">

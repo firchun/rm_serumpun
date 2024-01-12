@@ -45,11 +45,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 Route::middleware(['role:kasir', 'verified'])->group(function () {
     //order
     Route::get('orders', [OrderController::class, 'index'])->name('orders');
+    Route::get('orders/filter', [OrderController::class, 'filter'])->name('orders.filter');
     Route::post('orders/store', [OrderController::class, 'store'])->name('orders.store');
     Route::post('orders/storeItems', [OrderController::class, 'storeItems'])->name('orders.storeItems');
     Route::post('orders/storePayment', [OrderController::class, 'storePayment'])->name('orders.storePayment');
+    Route::post('orders/storeReceived', [OrderController::class, 'storeReceived'])->name('orders.storeReceived');
     Route::post('orders/lunas', [OrderController::class, 'lunas'])->name('orders.lunas');
     Route::put('orders/update/{id}', [OrderController::class, 'update'])->name('orders.update');
+    Route::get('orders/send_wa/{id},{phone},{invoice},{tagihan}', [OrderController::class, 'send_wa'])->name('orders.send_wa');
     Route::delete('orders/destroy/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
     Route::delete('orders/destroyItems/{id}', [OrderController::class, 'destroyItems'])->name('orders.destroyItems');
     Route::delete('orders/destroyPayment/{id}', [OrderController::class, 'destroyPayment'])->name('orders.destroyPayment');
@@ -62,6 +65,12 @@ Route::middleware(['role:kasir', 'verified'])->group(function () {
 Route::middleware(['role:user', 'verified'])->group(function () {
     //order
     Route::get('orders/member', [OrderController::class, 'member'])->name('orders.member');
+});
+Route::middleware(['role:pengelola,kasir', 'verified'])->group(function () {
+    //piutang customers
+    Route::get('report/customers', [ReportController::class, 'customers'])->name('report.customers');
+    Route::get('report/customers/filter', [ReportController::class, 'customers_filter'])->name('report.customers_filter');
+    Route::get('report/customers/rincian/{id}', [ReportController::class, 'customersDetail'])->name('report.customers_detail');
 });
 Route::middleware(['role:pengelola', 'verified'])->group(function () {
     //user

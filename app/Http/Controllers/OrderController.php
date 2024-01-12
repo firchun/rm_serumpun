@@ -8,6 +8,8 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderPaidOff;
 use App\Models\OrderPayment;
+use App\Models\OrderReceived;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +23,63 @@ class OrderController extends Controller
         $data = [
             'title' => 'Daftar Pesanan',
             'orders' => Order::latest()->get(),
+            'user' => User::where('role', 'user')->get(),
         ];
+        return view('admin.order.index', $data);
+    }
+    public function filter(Request $request)
+    {
+        $received = $request->received;
+        $paidOff = $request->paid_off;
+        $idUser = $request->user;
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+
+        $orderQuery = Order::latest();
+        if ($from_date != null && $to_date != null) {
+
+            $orderQuery =  $orderQuery->where('created_at', '>=', $from_date)->where('created_at', '<=', $to_date);
+        }
+        // Filter berdasarkan ID Pengguna
+        if ($idUser != '-') {
+            $orderQuery->where('id_user', $idUser);
+        }
+
+        // Filter berdasarkan status pelunasan
+        if ($paidOff != '-') {
+            if ($paidOff == 0) {
+                $orderQuery->whereNotIn('id', function ($query) {
+                    $query->select('id_order')
+                        ->from('order_paid_offs');
+                });
+            } else {
+                $orderQuery->whereIn('id', function ($query) {
+                    $query->select('id_order')
+                        ->from('order_paid_offs');
+                });
+            }
+        }
+        // Filter berdasarkan status pengambilan
+        if ($received != '-') {
+            if ($received == 0) {
+                $orderQuery->whereNotIn('id', function ($query) {
+                    $query->select('id_order')
+                        ->from('order_receiveds');
+                });
+            } else {
+                $orderQuery->whereIn('id', function ($query) {
+                    $query->select('id_order')
+                        ->from('order_receiveds');
+                });
+            }
+        }
+        $data = [
+            'title' => 'Daftar Pesanan',
+            'orders' => $orderQuery->get(),
+            'user' => User::where('role', 'user')->get(),
+        ];
+
+        session()->flashInput($request->input());
         return view('admin.order.index', $data);
     }
     public function member()
@@ -31,6 +89,14 @@ class OrderController extends Controller
             'orders' => Order::where('id_user', Auth::user()->id)->latest()->get(),
         ];
         return view('admin.order.member', $data);
+    }
+    public function send_wa($id, $phone, $invoice, $tagihan)
+    {
+        $order = Order::find($id);
+        $order->send_wa = 1;
+        $order->save();
+
+        return redirect()->to('https://api.whatsapp.com/send?phone=' . $phone . '&text=Hai,Pesanan telah diinput..%0aNo. Invoice : ' . $invoice . '%0aTotal Tagihan : Rp.' . number_format($tagihan) . '%0a%0aHormat kami : Rumah Makan Serumpun');
     }
     public function store(Request $request)
     {
@@ -107,6 +173,7 @@ class OrderController extends Controller
             $request->validate([
                 'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,10000'],
                 'id_order' => ['required'],
+                'paid' => ['required'],
             ]);
 
             // if ($request->hasFile('thumbnail')) {
@@ -129,6 +196,7 @@ class OrderController extends Controller
 
             $order_payment = new OrderPayment();
             $order_payment->id_order = $request->id_order;
+            $order_payment->paid = $request->paid;
             $order_payment->thumbnail = isset($file_path) ? $file_path : '';
             $order_payment->save();
 
@@ -143,6 +211,36 @@ class OrderController extends Controller
             $notifikasi->save();
 
             return redirect()->back()->with('success', 'Berhasil menambahkan pembayaran');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('danger', 'terjadi kesalahan :' . $e->getMessage());
+        }
+    }
+    public function storeReceived(Request $request)
+    {
+        try {
+            $request->validate([
+                'id_order' => ['required'],
+                'recipent' => ['required'],
+            ]);
+
+
+
+            $received = new OrderReceived();
+            $received->id_order = $request->id_order;
+            $received->recipent = $request->recipent;
+            $received->save();
+
+            // buat notifikasi
+            $order = Order::find($request->id_order);
+            $notifikasi = new Notifikasi();
+            $notifikasi->id_user = $order->id_user;
+            $notifikasi->type = 'success';
+            $notifikasi->content = ' Invoice ' . $order->invoice . ' telah diambil oleh : ' . $request->recipent;
+            $notifikasi->url = '/orders/member';
+            $notifikasi->read_at = null;
+            $notifikasi->save();
+
+            return redirect()->back()->with('success', 'Berhasil mengkonfirmasi pengambilan');
         } catch (\Exception $e) {
             return redirect()->back()->with('danger', 'terjadi kesalahan :' . $e->getMessage());
         }

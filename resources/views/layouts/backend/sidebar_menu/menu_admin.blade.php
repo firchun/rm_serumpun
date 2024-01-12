@@ -8,13 +8,15 @@
         <li class="pc-item pc-caption">
             <label>Data</label>
         </li>
+        <li class="pc-item"><a href="{{ url('/report/customers') }}" class="pc-link "><span class="pc-micon"><i
+                        data-feather="users"></i></span><span class="pc-mtext">Pelanggan</span></a></li>
         <li class="pc-item"><a href="{{ url('/foods') }}" class="pc-link "><span class="pc-micon"><i
-                        data-feather="layout"></i></span><span class="pc-mtext">Daftar Menu</span></a></li>
+                        data-feather="layers"></i></span><span class="pc-mtext">Daftar Menu</span></a></li>
         <li class="pc-item pc-caption">
             <label>Transaksi</label>
         </li>
         <li class="pc-item"><a href="{{ url('/orders') }}" class="pc-link "><span class="pc-micon"><i
-                        data-feather="layout"></i></span><span class="pc-mtext">Pesanan</span></a></li>
+                        data-feather="shopping-cart"></i></span><span class="pc-mtext">Pesanan</span></a></li>
     @elseif(Auth::user()->role == 'pengelola')
         <li class="pc-item pc-caption">
             <label>Akun</label>
@@ -35,7 +37,7 @@
             <label>Transaksi</label>
         </li>
         <li class="pc-item"><a href="{{ url('/orders/member') }}" class="pc-link "><span class="pc-micon"><i
-                        data-feather="layout"></i></span><span class="pc-mtext">Pesanan</span></a></li>
+                        data-feather="shopping-cart"></i></span><span class="pc-mtext">Pesanan</span></a></li>
     @endif
     @if (Auth::user()->role == 'pengelola')
         <li class="pc-item pc-caption">
@@ -50,6 +52,10 @@
             </ul>
             <ul class="pc-submenu">
                 <li class="pc-item"><a href="{{ url('/report/orders') }}" class="pc-link ">Laporan Pesanan</a></li>
+            </ul>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a href="{{ url('/report/customers') }}" class="pc-link ">Laporan pelanggan</a>
+                </li>
             </ul>
         </li>
     @endif

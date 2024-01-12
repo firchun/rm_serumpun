@@ -4,11 +4,86 @@ namespace App\Http\Controllers;
 
 use App\Models\FoodMenu;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
+    public function customers()
+    {
+
+        $data = [
+            'title' => 'Piutang Pelanggan',
+            'user' => User::where('role', 'user')->get(),
+            'data' => User::where('role', 'user')->get(),
+        ];
+        return view('admin.report.customers', $data);
+    }
+    public function customers_filter(Request $request)
+    {
+        $paidOff = $request->paid_off;
+        $idUser = $request->user;
+        $action = $request->input('action');
+
+        $userQuery = User::where('role', 'user');
+
+        // Filter berdasarkan ID Pengguna
+        if ($idUser != '-') {
+            $userQuery->where('id', $idUser);
+        }
+
+        // Filter berdasarkan status pelunasan
+
+        if ($paidOff != '-') {
+            if ($paidOff == 0) {
+                $userQuery->whereNotIn('id', function ($query) {
+                    $query->select('id_user')
+                        ->from('order_paid_offs');
+                });
+                $userQuery->whereIn('id', function ($query) {
+                    $query->select('id_user')
+                        ->from('orders');
+                });
+            } else {
+                $userQuery->whereIn('id', function ($query) {
+                    $query->select('id_user')
+                        ->from('order_paid_offs');
+                });
+            }
+        }
+        if ($action == 'filter') {
+            $data = [
+                'title' => 'Piutang Pelanggan',
+                'user' => User::where('role', 'user')->get(),
+                'data' => $userQuery->get(),
+            ];
+            session()->flashInput($request->input());
+            return view('admin.report.customers', $data);
+        } else {
+
+            $data = [
+                'title' => 'Piutang Pelanggan',
+                'user' => User::where('role', 'user')->get(),
+                'data' => $userQuery->get(),
+            ];
+
+            $pdf = \PDF::loadview('admin/report/pdf/pdf_customers', $data)->setPaper("A4", "portrait");
+            return $pdf->stream('piutang_pelanggan_' . date('d-m-Y') . '.pdf');
+        }
+    }
+
+
+    public function customersDetail($id)
+    {
+        $user = User::find($id);
+        $data = [
+            'title' => 'Rincian piutang pelanggan : ' . $user->name,
+            'user' => $user,
+            'order' => Order::where('id_user', $user->id)->get(),
+        ];
+        return view('admin.report.customers_detail', $data);
+    }
     public function menu()
     {
         $data = [

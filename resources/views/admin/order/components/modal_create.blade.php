@@ -10,12 +10,12 @@
                 <form action="{{ route('orders.store') }}" enctype="multipart/form-data" method="POST">
                     @csrf
                     <div class="form-group ">
-                        <label>Foto Menu</label>
+                        <label>Foto Menu <span class="text-danger">*</span></label>
                         <input type="file" class="form-control" name="thumbnail">
                         <small>Upload gambar jika ingin perbarui</small>
                     </div>
                     <div class="form-group">
-                        <label>Pilih Pelanggan</label>
+                        <label>Pilih Pelanggan <span class="text-danger">*</span></label>
                         <select name="id_user" class="form-control">
                             @foreach (App\Models\User::where('role', 'user')->get() as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -23,23 +23,23 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Keterangan</label>
-                        <textarea name="description" class="form-control"></textarea>
+                        <label>Keterangan <span class="text-danger">*</span></label>
+                        <textarea name="description" class="form-control" required></textarea>
                     </div>
                     <hr>
                     <div class="border border-primary p-2 rounded">
                         <h5>Pesanan</h5>
                         <div class="row " id="data_pesanan">
                             <div class="col-lg-4">
-                                <label>Nama Pesanan</label>
-                                <input type="text" name="name[]" class="form-control" placeholder="Nama">
+                                <label>Nama Pesanan <span class="text-danger">*</span></label>
+                                <input type="text" name="name[]" class="form-control" placeholder="Nama" required>
                             </div>
                             <div class="col-lg-2">
-                                <label>Jumlah </label>
+                                <label>Jumlah <span class="text-danger">*</span></label>
                                 <input type="number" name="sum[]" class="form-control" value="1">
                             </div>
                             <div class="col-lg-2">
-                                <label>Satuan </label>
+                                <label>Satuan <span class="text-danger">*</span></label>
                                 <select name="unit[]" class="form-control">
                                     <option value="Bungkus">Bungkus</option>
                                     <option value="Porsi">Porsi</option>
@@ -52,8 +52,8 @@
                                 </select>
                             </div>
                             <div class="col-lg-4">
-                                <label>Harga Pesanan (Rp)</label>
-                                <input type="number" name="price[]" class="form-control">
+                                <label>Harga Pesanan (Rp) <span class="text-danger">*</span></label>
+                                <input type="number" name="price[]" class="form-control" required>
                             </div>
                             <div class="col-lg-2">
                                 <button type="button" class="btn btn-light-primary mt-4 add-button"><i
@@ -80,15 +80,15 @@
 
                 newRow.innerHTML = `
                 <div class="col-lg-4">
-                    <label>Nama Pesanan</label>
-                    <input type="text" name="name[]" class="form-control" placeholder="Nama">
+                    <label>Nama Pesanan <span class="text-danger">*</span></label>
+                    <input type="text" name="name[]" class="form-control" placeholder="Nama" required>
                 </div>
                 <div class="col-lg-2">
-                    <label>Jumlah </label>
+                    <label>Jumlah <span class="text-danger">*</span></label>
                     <input type="number" name="sum[]" class="form-control" value="1">
                 </div>
                 <div class="col-lg-2">
-                    <label>Satuan </label>
+                    <label>Satuan <span class="text-danger">*</span></label>
                     <select name="unit[]" class="form-control">
                         <option value="Bungkus">Bungkus</option>
                             <option value="Porsi">Porsi</option>
@@ -101,8 +101,8 @@
                         </select>
                 </div>
                 <div class="col-lg-4">
-                    <label>Harga Pesanan (Rp)</label>
-                    <input type="number" name="price[]" class="form-control">
+                    <label>Harga Pesanan (Rp) <span class="text-danger">*</span></label>
+                    <input type="number" name="price[]" class="form-control" required>
                 </div>
                 <div class="col-lg-2">
                     <button type="button" class="btn btn-danger mt-4 remove-button"><i class="fa fa-minus"></i></button>

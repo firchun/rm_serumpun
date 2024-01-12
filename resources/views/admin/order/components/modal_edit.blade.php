@@ -24,7 +24,7 @@
                     <div class="form-group">
                         <label>Pilih Pelanggan</label>
                         <select name="id_user" class="form-control">
-                            @foreach (App\Models\User::all() as $list)
+                            @foreach (App\Models\User::where('role', 'user')->get() as $list)
                                 <option value="{{ $list->id }}" @if ($item->id_user == $item->id) selected @endif>
                                     {{ $list->name }}</option>
                             @endforeach
