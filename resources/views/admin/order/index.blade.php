@@ -148,13 +148,11 @@
                                                         $check_payment = App\Models\OrderPayment::where('id_order', $item->id);
                                                         $checkPaidOff = App\Models\OrderPaidOff::where('id_order', $item->id);
                                                     @endphp
-                                                    @if ($check_payment->count() != 0)
-                                                        @if ($checkPaidOff->count() == 0)
-                                                            <span class="badge badge-warning"> Belum Lunas</span>
-                                                        @else
-                                                            <span class="badge badge-success">Lunas</span><br>
-                                                            <small>{{ $checkPaidOff->first()->created_at->format('d-F-Y') }}</small>
-                                                        @endif
+                                                    @if ($check_payment->count() != 0 && $checkPaidOff->count() == 0)
+                                                        <span class="badge badge-warning"> Belum Lunas</span>
+                                                    @elseif($checkPaidOff->count() < 0)
+                                                        <span class="badge badge-success">Lunas</span><br>
+                                                        <small>{{ $checkPaidOff->first()->created_at->format('d-F-Y') }}</small>
                                                     @else
                                                         <span class="badge badge-danger">Belum Dibayar</span>
                                                     @endif
