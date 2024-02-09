@@ -24,7 +24,7 @@
                 Jalan Taman Makam Pahlawan.<br>
                 Kel. Kelapa Lima, Kec. Merauke<br>
                 Kab. Merauke-Papua Selatan 99616<br>
-                081344686261<br>
+                0812-4188-6844<br>
             </td>
             <td>
                 <strong class="text-success">#{{ $order->invoice }}</strong><br>
