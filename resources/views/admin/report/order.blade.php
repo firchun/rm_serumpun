@@ -54,6 +54,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Tanggal</th>
                                             <th>Foto</th>
                                             <th>No. Invoice</th>
                                             <th>Pesanan</th>
@@ -65,6 +66,8 @@
                                         @foreach ($order as $item)
                                             <tr>
                                                 <td width="10">{{ $loop->iteration }}</td>
+                                                <td>
+                                                    {{ \Carbon\Carbon::parse($item->date)->format('d F Y') }}</td>
                                                 <td width="150">
                                                     <div class="thumbnail">
                                                         <div class="thumb">

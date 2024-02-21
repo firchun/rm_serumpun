@@ -28,7 +28,7 @@
             </td>
             <td>
                 <strong class="text-success">#{{ $order->invoice }}</strong><br>
-                tanggal : {{ $order->created_at->format('d-m-Y') }}<br>
+                tanggal : {{ \Carbon\Carbon::parse($order->date)->format('d F Y') }}<br>
                 <small>kepada Yth.</small><br>
                 {{ $order->user->name }}<br>
                 {{ $order->user->phone }}<br>

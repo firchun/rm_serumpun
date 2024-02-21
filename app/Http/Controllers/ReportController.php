@@ -115,7 +115,7 @@ class ReportController extends Controller
         $to_date = $request->to_date;
         $pembayaran = $request->pembayaran;
 
-        $query = Order::where('created_at', '>=', $from_date)->where('created_at', '<=', $to_date);
+        $query = Order::where('date', '>=', $from_date)->where('date', '<=', $to_date);
         if ($pembayaran == 'lunas') {
             $query->whereExists(function ($query) {
                 $query->select(DB::raw(1))

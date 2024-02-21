@@ -31,6 +31,11 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label>Tanggal Pemesanan <span class="text-danger">*</span></label>
+                        <input type="date" name="date" class="form-control" required
+                            value="{{ $item->date ?? date('Y-m-d') }}">
+                    </div>
+                    <div class="form-group">
                         <label>Keterangan</label>
                         <textarea name="description" class="form-control">{{ $item->description }}</textarea>
                     </div>

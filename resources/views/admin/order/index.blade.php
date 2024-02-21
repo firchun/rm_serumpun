@@ -111,7 +111,8 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    {{ $item->created_at->format('d F Y') }}
+                                                    {{ \Carbon\Carbon::parse($item->date)->format('d F Y') }}
+
                                                 </td>
                                                 <td>
                                                     {{ $item->user->name }}
