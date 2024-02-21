@@ -132,6 +132,7 @@ class OrderController extends Controller
             $orders->invoice = 'INV-' . substr(date('Y'), -2) . date('mdhis');
             $orders->id_user = $request->id_user;
             $orders->description = $request->description;
+            $orders->date = $request->date;
             // $orders->total_price = 0;
             $orders->thumbnail = isset($file_path) ? $file_path : '';
             $orders->save();
@@ -342,6 +343,7 @@ class OrderController extends Controller
 
         $orders->id_user = $request->id_user;
         $orders->description = $request->description;
+        $orders->date = $request->date;
         $orders->thumbnail = isset($file_path) ? $file_path : $orders->thumbnail;
         $orders->save();
 
