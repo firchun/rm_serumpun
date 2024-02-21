@@ -25,11 +25,11 @@
                                         <tr>
                                             <td>#</td>
                                             <td>Aksi</td>
-                                            <td<>Tanggal</td>
-                                                <td>No. Invoice</td>
-                                                <td>Tagihan</td>
-                                                <td>Pembayaran</td>
-                                                <td>Pengambilan</td>
+                                            <td>Tanggal</td>
+                                            <td>No. Invoice</td>
+                                            <td>Tagihan</td>
+                                            <td>Pembayaran</td>
+                                            <td>Pengambilan</td>
                                         </tr>
                                     </thead>
                                     <tbody>
