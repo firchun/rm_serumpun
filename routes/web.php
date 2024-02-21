@@ -71,6 +71,7 @@ Route::middleware(['role:pengelola,kasir', 'verified'])->group(function () {
     Route::get('report/customers', [ReportController::class, 'customers'])->name('report.customers');
     Route::get('report/customers/filter', [ReportController::class, 'customers_filter'])->name('report.customers_filter');
     Route::get('report/customers/rincian/{id}', [ReportController::class, 'customersDetail'])->name('report.customers_detail');
+    Route::get('report/customers/invoice/{id}', [ReportController::class, 'customersInvoice'])->name('report.customers_invoice');
 });
 Route::middleware(['role:pengelola', 'verified'])->group(function () {
     //user

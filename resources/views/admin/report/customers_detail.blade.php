@@ -10,6 +10,10 @@
             <!-- [ Main Content ] start -->
             <div class="row">
                 <div class="col-md-8">
+                    <div class="mb-3 d-flex justify-content-end">
+                        <a href="{{ route('report.customers_invoice', $user->id) }}" class="btn btn-success "><i
+                                class="fa fa-print"></i> Cetak Tagihan</a>
+                    </div>
                     <div class="card">
                         <div class="card-header">
                             {{ $title }}
@@ -21,10 +25,11 @@
                                         <tr>
                                             <td>#</td>
                                             <td>Aksi</td>
-                                            <td>No. Invoice</td>
-                                            <td>Tagihan</td>
-                                            <td>Pembayaran</td>
-                                            <td>Pengambilan</td>
+                                            <td<>Tanggal</td>
+                                                <td>No. Invoice</td>
+                                                <td>Tagihan</td>
+                                                <td>Pembayaran</td>
+                                                <td>Pengambilan</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -40,6 +45,7 @@
                                                         class="btn btn-light-primary mx-2 btn-sm"><i class="fa fa-eye"></i>
                                                     </a>
                                                 </td>
+                                                <td> {{ \Carbon\Carbon::parse($item->date)->format('d F Y') }}</td>
                                                 <td>
                                                     <strong>{{ $item->invoice }}</strong>
                                                     <br>

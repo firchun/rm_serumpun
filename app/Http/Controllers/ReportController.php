@@ -84,6 +84,24 @@ class ReportController extends Controller
         ];
         return view('admin.report.customers_detail', $data);
     }
+    public function customersInvoice($id)
+    {
+        $user = User::find($id);
+        $order = Order::where('id_user', $user->id)
+            ->whereNotIn('id', function ($query) {
+                $query->select('id_order')
+                    ->from('order_paid_offs');
+            })
+            ->get();
+        $data = [
+            'title' => 'Rincian Piutang : ' . $user->name,
+            'user' => $user,
+            'order' => $order,
+        ];
+        $pdf = \PDF::loadview('admin/report/pdf/pdf_all_invoice', $data)->setPaper("A4", "portrait");
+        return $pdf->stream('invoice_pelanggan_' . $user->name . ' - ' . date('d-m-Y') . '.pdf');
+    }
+
     public function menu()
     {
         $data = [
