@@ -125,7 +125,10 @@
                                                 </td>
                                                 {{-- <td> --}}
                                                 @php
-                                                    $order_item = App\Models\OrderItem::where('id_order', $item->id)->get();
+                                                    $order_item = App\Models\OrderItem::where(
+                                                        'id_order',
+                                                        $item->id,
+                                                    )->get();
                                                     $total_price = $order_item->sum(function ($orderItem) {
                                                         return $orderItem->sum * $orderItem->price;
                                                     });
@@ -146,8 +149,14 @@
                                                 </td>
                                                 <td>
                                                     @php
-                                                        $check_payment = App\Models\OrderPayment::where('id_order', $item->id);
-                                                        $checkPaidOff = App\Models\OrderPaidOff::where('id_order', $item->id);
+                                                        $check_payment = App\Models\OrderPayment::where(
+                                                            'id_order',
+                                                            $item->id,
+                                                        );
+                                                        $checkPaidOff = App\Models\OrderPaidOff::where(
+                                                            'id_order',
+                                                            $item->id,
+                                                        );
                                                     @endphp
                                                     @if ($check_payment->count() != 0 && $checkPaidOff->count() == 0)
                                                         <span class="badge badge-warning"> Belum Lunas</span>
@@ -160,7 +169,10 @@
                                                 </td>
                                                 <td>
                                                     @php
-                                                        $checkReceived = App\Models\OrderReceived::where('id_order', $item->id);
+                                                        $checkReceived = App\Models\OrderReceived::where(
+                                                            'id_order',
+                                                            $item->id,
+                                                        );
                                                     @endphp
                                                     @if ($checkReceived->count() == 0)
                                                         <button type="button"

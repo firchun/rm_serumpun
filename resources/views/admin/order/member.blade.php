@@ -55,7 +55,10 @@
                                                 </td>
                                                 <td>
                                                     @php
-                                                        $order_item = App\Models\OrderItem::where('id_order', $item->id)->get();
+                                                        $order_item = App\Models\OrderItem::where(
+                                                            'id_order',
+                                                            $item->id,
+                                                        )->get();
                                                         $total_price = $order_item->sum(function ($orderItem) {
                                                             return $orderItem->sum * $orderItem->price;
                                                         });
@@ -75,12 +78,22 @@
                                                 </td>
                                                 <td>
                                                     @php
-                                                        $check_payment = App\Models\OrderPayment::where('id_order', $item->id);
+                                                        $check_payment = App\Models\OrderPayment::where(
+                                                            'id_order',
+                                                            $item->id,
+                                                        );
+                                                        $checkPaidOff = App\Models\OrderPaidOff::where(
+                                                            'id_order',
+                                                            $item->id,
+                                                        );
                                                     @endphp
-                                                    @if ($check_payment->count() != 0)
-                                                        <span class="badge badge-success">Lunas</span>
+                                                    @if ($check_payment->count() != 0 && $checkPaidOff->count() == 0)
+                                                        <span class="badge badge-warning"> Belum Lunas</span>
+                                                    @elseif($checkPaidOff->count() < 0)
+                                                        <span class="badge badge-success">Lunas</span><br>
+                                                        <small>{{ $checkPaidOff->first()->created_at->format('d-F-Y') }}</small>
                                                     @else
-                                                        <span class="badge badge-danger">Belum Lunas</span>
+                                                        <span class="badge badge-danger">Belum Dibayar</span>
                                                     @endif
                                                 </td>
                                                 <td width="200">
