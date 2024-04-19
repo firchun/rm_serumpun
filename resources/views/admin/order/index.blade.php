@@ -160,7 +160,7 @@
                                                     @endphp
                                                     @if ($check_payment->count() != 0 && $checkPaidOff->count() == 0)
                                                         <span class="badge badge-warning"> Belum Lunas</span>
-                                                    @elseif($checkPaidOff->count() < 0)
+                                                    @elseif($checkPaidOff->count() < 0 && $check_payment->count() != 0)
                                                         <span class="badge badge-success">Lunas</span><br>
                                                         <small>{{ $checkPaidOff->first()->created_at->format('d-F-Y') }}</small>
                                                     @else
