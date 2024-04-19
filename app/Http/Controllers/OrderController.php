@@ -73,6 +73,7 @@ class OrderController extends Controller
                 });
             }
         }
+        // dd($orderQuery->get());
         $data = [
             'title' => 'Daftar Pesanan',
             'orders' => $orderQuery->get(),

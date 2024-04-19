@@ -48,13 +48,15 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Tanggal</span>
                                     </div>
-                                    <input type="date" name="from_date" class="form-control" value="{{ date('Y-m-d') }}">
+                                    <input type="date" name="from_date" class="form-control"
+                                        value="{{ old('from_date', date('Y-m-d')) }}">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Sampai</span>
                                     </div>
                                     <input type="date" name="to_date" class="form-control"
-                                        value="{{ date('Y-m-d', strtotime('+1 month')) }}">
+                                        value="{{ old('to_date', date('Y-m-d', strtotime('+1 month'))) }}">
                                 </div>
+
                             </div>
                             <div class="mt-4 text-center">
                                 <button type="submit" class="btn btn-primary btn-md">Terapkan</button>
