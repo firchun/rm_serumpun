@@ -14,10 +14,10 @@
 </head>
 
 <body>
-    <table class="table table-borderles">
+    <table class="table table-borderles table-sm" style="font-size:12px;">
         <tr>
             <td style="width: 150px;">
-                <img src="{{ public_path() }}/img/logo.png" alt="" width="100" />
+                <img src="{{ public_path() }}/img/logo.png" alt="" width="80" />
 
             </td>
             <td class="text-center">
@@ -36,7 +36,7 @@
         <!-- Row start -->
 
         <div class="table-responsive">
-            <table class="table table-bordered" style="font-size: 12px;">
+            <table class="table table-bordered table-sm" style="font-size: 12px;">
                 <thead>
                     <tr>
                         <th>#</th>

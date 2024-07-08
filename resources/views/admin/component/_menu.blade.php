@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12 my-3">
-        <h2 class="text-center text-muted"> Daftar Menu </h2>
+        <h2 class="text-center text-muted"> Daftar Menu Makanan</h2>
     </div>
     @foreach ($menu as $item)
         <div class="col-md-4">
