@@ -11,7 +11,7 @@
         <li class="pc-item"><a href="{{ url('/report/customers') }}" class="pc-link "><span class="pc-micon"><i
                         data-feather="users"></i></span><span class="pc-mtext">Pelanggan</span></a></li>
         <li class="pc-item"><a href="{{ url('/foods') }}" class="pc-link "><span class="pc-micon"><i
-                        data-feather="layers"></i></span><span class="pc-mtext">Daftar Menu</span></a></li>
+                        data-feather="layers"></i></span><span class="pc-mtext">Daftar Menu Makanan</span></a></li>
         <li class="pc-item pc-caption">
             <label>Transaksi</label>
         </li>

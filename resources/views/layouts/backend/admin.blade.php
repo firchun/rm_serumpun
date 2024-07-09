@@ -170,7 +170,8 @@
                         <a class="pc-head-link dropdown-toggle arrow-none mr-0" data-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
                             <img src="{{ Auth::user()->avatar == '' ? asset('img/user.png') : url(Storage::url(Auth::user()->avatar)) }}"
-                                alt="user-image" class="user-avtar">
+                                alt="user-image" class="user-avtar"
+                                style="height: 40px; width:40px; object-fit:cover;">
                             <span>
                                 <span class="user-name">{{ Auth::user()->name }}</span>
                                 <span class="user-desc">{{ Auth::user()->role }}</span>

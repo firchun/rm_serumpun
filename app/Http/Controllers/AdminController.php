@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendInvoice;
 use App\Models\Customer;
 use App\Models\FoodMenu;
 use App\Models\Notifikasi;
@@ -11,8 +12,10 @@ use App\Models\PackagePrice;
 use App\Models\Subdivision;
 use App\Models\Transportation;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
@@ -33,6 +36,23 @@ class AdminController extends Controller
      */
     public function index()
     {
+        //send email
+        $thresholdDate = Carbon::now()->subMonths(3)->format('Y-m-d');
+
+        $orders = Order::with('user')
+            ->where('date', '<=', $thresholdDate)
+            ->where(function ($query) use ($thresholdDate) {
+                $query->whereNull('last_send_email')
+                    ->orWhere('last_send_email', '<=', $thresholdDate);
+            })
+            ->get();
+
+        foreach ($orders as $order) {
+            Mail::to($order->user->email)->send(new SendInvoice($order));
+
+            $order->last_send_email = Carbon::now()->format('Y-m-d');
+            $order->save();
+        }
         // check not paid
         if (Auth::user()->role == 'user') {
             $order = Order::where('id_user', Auth::user()->id)->get();
