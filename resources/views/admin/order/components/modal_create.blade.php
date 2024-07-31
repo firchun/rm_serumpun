@@ -14,6 +14,11 @@
                         <input type="file" class="form-control" name="thumbnail">
                         <small>Upload gambar jika ingin perbarui</small>
                     </div>
+                    <div class="form-group ">
+                        <label>Foto dispo <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" name="thumbnail-dispo" required>
+                        <small>Harap Uplad dispo</small>
+                    </div>
                     <div class="form-group">
                         <label>Pilih Pelanggan <span class="text-danger">*</span></label>
                         <select name="id_user" class="form-control">

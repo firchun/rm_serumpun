@@ -104,6 +104,7 @@ class OrderController extends Controller
         try {
             $request->validate([
                 'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,10000'],
+                'dispo' => ['nullable', 'file', 'mimes:jpg,jpeg,png,bmp', 'between:0,10000'],
                 'id_user' => ['required'],
                 'description' => ['nullable', 'string', 'max:191'],
                 'name.*' => 'required|string',
@@ -128,6 +129,19 @@ class OrderController extends Controller
 
                 $file_path = 'public/uploads/' . $filename;
             }
+            if ($request->hasFile('dispo')) {
+                $filename = Str::random(32) . '.' . $request->file('dispo')->getClientOriginalExtension();
+
+                $image = $request->file('dispo');
+                $path = storage_path('app/public/uploads/') . $filename;
+
+                // Resize dan simpan gambar
+                Image::make($image->getRealPath())->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($path);
+
+                $file_path_dispo = 'public/uploads/' . $filename;
+            }
 
             $orders = new Order();
             $orders->invoice = 'INV-' . substr(date('Y'), -2) . date('mdhis');
@@ -136,6 +150,7 @@ class OrderController extends Controller
             $orders->date = $request->date;
             // $orders->total_price = 0;
             $orders->thumbnail = isset($file_path) ? $file_path : '';
+            $orders->dispo = isset($file_path_dispo) ? $file_path_dispo : '';
             $orders->save();
 
 
