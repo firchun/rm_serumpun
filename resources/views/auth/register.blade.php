@@ -26,7 +26,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i data-feather="image"></i></span>
                                     </div>
-                                    <input type="file" name="avatar" class="form-control">
+                                    <input type="file" name="avatar" class="form-control" required accept="image/*" capture="environment">
                                     @error('avatar')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
